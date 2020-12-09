@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .hidden {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="videos"></div>
+    </body>
+    <script>
+        console.log("Fetching config...");
+        fetch("/config.json")
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            let videos = Object.keys(data.videos);
+            let tmp = "";
+            for(var i = 0; i < videos.length; i++) tmp += "<video preload=\"auto\" class=\"hidden\" id=\"video_" + videos[i] +"\"><source src=\"" + data.videos[videos[i]] + "\" type=\"video/mp4\"></video>";
+            console.log("Appending to DOM: " + tmp);
+            document.getElementById("videos").innerHTML = tmp;
+        })
+        .catch(() => {
+            console.log("Error retrieving config");
+        })
+
+        var websocket = new WebSocket("ws://" + location.host);
+    </script>
+</html>

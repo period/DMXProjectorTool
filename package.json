@@ -8,6 +8,7 @@
   },
   "author": "",
   "dependencies": {
-    "stagehack-sacn": "^1.0.7"
+    "stagehack-sacn": "^1.0.7",
+    "ws": "^7.4.0"
   }
 }

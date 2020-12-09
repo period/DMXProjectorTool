@@ -1,0 +1,7 @@
+{
+    "http_port": 8080,
+    "videos": {
+        "1": "fantasia.mp4",
+        "2": "finale.mp4"
+    }
+}
