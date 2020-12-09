@@ -1,32 +1,30 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <style>
-            .hidden {
-                display: none;
-            }
-        </style>
     </head>
     <body>
-        <div id="videos"></div>
+        <video preload="auto" id="video" controls>
+            <source src="video.mp4" type="video/mp4">
+        </video>
     </body>
     <script>
-        console.log("Fetching config...");
-        fetch("/config.json")
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            let videos = Object.keys(data.videos);
-            let tmp = "";
-            for(var i = 0; i < videos.length; i++) tmp += "<video preload=\"auto\" class=\"hidden\" id=\"video_" + videos[i] +"\"><source src=\"" + data.videos[videos[i]] + "\" type=\"video/mp4\"></video>";
-            console.log("Appending to DOM: " + tmp);
-            document.getElementById("videos").innerHTML = tmp;
-        })
-        .catch(() => {
-            console.log("Error retrieving config");
-        })
-
         var websocket = new WebSocket("ws://" + location.host);
+        websocket.onmessage = (event) => {
+            let video = document.getElementById("video");
+            if(event.data == 1) {
+                let isPlaying = !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);
+                console.log("Is playing: " + isPlaying);
+                if(!isPlaying) {
+                    console.log("Play!");
+                    video.currentTime = 0;
+                    video.play();
+                }
+            }
+            if(event.data == 0) {
+                console.log("Pause!");
+                video.currentTime = 0;
+                video.pause();
+            }
+        };
     </script>
 </html>
